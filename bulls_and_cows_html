@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulls & Cows</title>
+    <style>
+        body {
+			font-family: Arial, sans-serif;
+			background-color: #d2b48c; /* Darker brown background */
+			margin: 0;
+			padding: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+		}
+
+		.container {
+			position: relative;
+			text-align: center;
+			background-color: #f9f9f9;
+			border-radius: 15px; /* Added border-radius */
+			padding: 30px;
+			max-width: 600px;
+			width: 90%;
+		}
+
+		h1 {
+			color: #333;
+			margin-bottom: 20px;
+			margin-right: 20px; /* Adjust the right margin */
+		}
+
+
+		.guess-row {
+			display: flex;
+			justify-content: center; /* Center the guess rows */
+			align-items: center;
+			margin-bottom: 20px;
+		}
+
+		.guess {
+			width: 50px;
+			height: 50px;
+			text-align: center;
+			margin: 0 5px;
+			font-size: 24px;
+			border: 2px solid #ccc;
+			border-radius: 5px;
+			outline: none;
+		}
+
+		.guess:focus {
+			border-color: #007bff;
+			outline: none; 
+		}
+
+		.feedback-container {
+			display: flex;
+			align-items: center;
+			margin-top: 10px;
+			width: 110px;
+			justify-content: center; /* Center the feedback */
+		}
+
+		.feedback {
+			font-weight: bold;
+			font-size: 20px;
+			width: 100%;
+			text-align: center;
+		}
+
+		#message {
+			margin-top: 20px;
+			font-size: 18px;
+			color: #333;
+		}
+
+		/* Modal styles */
+		.modal {
+			display: none;
+			position: fixed;
+			z-index: 1;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgba(0, 0, 0, 0.4);
+		}
+
+		.modal-content {
+			background-color: #fefefe;
+			margin: 15% auto;
+			padding: 20px;
+			border-radius: 8px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			width: 80%;
+			max-width: 400px;
+		}
+
+		.close {
+			color: #aaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+			cursor: pointer;
+		}
+
+		.close:hover,
+		.close:focus {
+			color: #333;
+			text-decoration: none;
+		}
+
+		/* Restart button styles */
+		.restart-btn {
+			position: absolute;
+			top: 10px;
+			right: 50px;
+			font-size: 24px;
+			cursor: pointer;
+		}
+
+		/* Question mark button styles */
+		.question-btn {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			font-size: 24px;
+			cursor: pointer;
+		}
+
+		.home-btn {
+			position: absolute;
+			top: 10px;
+			left: 10px;
+			font-size: 24px;
+			cursor: pointer;
+		}
+
+		.guess:disabled {
+			background-color: white; /* Change to your preferred color */
+		}
+
+		.game-counter {
+			margin-top: 20px;
+			font-size: 18px;
+			color: #333;
+		}
+
+
+    </style>
+</head>
+<body>
+    <!-- Modal popup -->
+    <div id="myModal" class="modal">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<h2>How to Play Bulls & Cows</h2>
+			<p>Welcome to Bulls & Cows! In this game, you have to guess a 4-digit number. The number will have 4 unique digits.</p>
+			<ul>
+				<li>A <strong>Bull 🐂</strong> means you've guessed a digit correctly and it's in the right position.</li>
+				<li>A <strong>Cow 🐄</strong> means you've guessed a digit correctly, but it's in the wrong position.</li>
+			</ul>
+			<p>Your goal is to guess the number with the fewest attempts possible. You have 6 attempts to guess the number. Good luck!</p>
+		</div>
+	</div>
+	
+
+    <div class="container">
+        <h1>Bulls & Cows</h1>
+        <div id="guesses">
+            <div class="guess-row" id="row1">
+                <input type="text" maxlength="1" class="guess" id="guess11">
+                <input type="text" maxlength="1" class="guess" id="guess12">
+                <input type="text" maxlength="1" class="guess" id="guess13">
+                <input type="text" maxlength="1" class="guess" id="guess14">
+                <div class="feedback-container">
+                    <div class="feedback" id="feedback1"></div>
+                </div>
+            </div>
+            <div class="guess-row" id="row2">
+                <input type="text" maxlength="1" class="guess" id="guess21">
+                <input type="text" maxlength="1" class="guess" id="guess22">
+                <input type="text" maxlength="1" class="guess" id="guess23">
+                <input type="text" maxlength="1" class="guess" id="guess24">
+                <div class="feedback-container">
+                    <div class="feedback" id="feedback2"></div>
+                </div>
+            </div>
+            <div class="guess-row" id="row3">
+                <input type="text" maxlength="1" class="guess" id="guess31">
+                <input type="text" maxlength="1" class="guess" id="guess32">
+                <input type="text" maxlength="1" class="guess" id="guess33">
+                <input type="text" maxlength="1" class="guess" id="guess34">
+                <div class="feedback-container">
+                    <div class="feedback" id="feedback3"></div>
+                </div>
+            </div>
+            <div class="guess-row" id="row4">
+                <input type="text" maxlength="1" class="guess" id="guess41">
+                <input type="text" maxlength="1" class="guess" id="guess42">
+                <input type="text" maxlength="1" class="guess" id="guess43">
+                <input type="text" maxlength="1" class="guess" id="guess44">
+                <div class="feedback-container">
+                    <div class="feedback" id="feedback4"></div>
+                </div>
+            </div>
+            <div class="guess-row" id="row5">
+                <input type="text" maxlength="1" class="guess" id="guess51">
+                <input type="text" maxlength="1" class="guess" id="guess52">
+                <input type="text" maxlength="1" class="guess" id="guess53">
+                <input type="text" maxlength="1" class="guess" id="guess54">
+                <div class="feedback-container">
+                    <div class="feedback" id="feedback5"></div>
+                </div>
+            </div>
+            <div class="guess-row" id="row6">
+                <input type="text" maxlength="1" class="guess" id="guess61">
+                <input type="text" maxlength="1" class="guess" id="guess62">
+                <input type="text" maxlength="1" class="guess" id="guess63">
+                <input type="text" maxlength="1" class="guess" id="guess64">
+                <div class="feedback-container">
+                    <div class="feedback" id="feedback6"></div>
+                </div>
+            </div>
+        </div>
+        <div id="message"></div>
+       <!-- Restart button -->
+		<div class="restart-btn" title="Restart" onclick="restartGame()">⟳</div>
+		<!-- Question mark button -->
+		<div class="question-btn" title="Help" onclick="openModal()">❓</div>
+		<div class="home-btn" title="Home" onclick="goToHome()">🏠</div>
+		<div id="gameCounter" class="game-counter">Games Played: 0</div>
+
+
+    </div>
+
+    <script>
+        let targetNumber = generateRandomNumber();
+		let remainingGuesses = 6;
+		let currentRow = 1;
+		let currentCol = 1;
+
+		function generateRandomNumber() {
+			let digits = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // First digit cannot be 0
+			let num = "";
+
+			// Select the first digit (1-9)
+			let firstDigitIndex = Math.floor(Math.random() * digits.length);
+			num += digits[firstDigitIndex];
+			digits.splice(firstDigitIndex, 1); // Remove the selected digit from the pool
+
+			// Add 0 to the pool for the remaining digits
+			digits.push(0);
+
+			// Select the remaining three digits (0-9, no repeats)
+			while (num.length < 4) {
+				let digitIndex = Math.floor(Math.random() * digits.length);
+				num += digits[digitIndex];
+				digits.splice(digitIndex, 1); // Remove the selected digit from the pool
+			}
+
+			return num;
+		}
+
+		function handleInput(event) {
+			const value = event.target.value;
+			if (/^\d$/.test(value)) {
+				event.target.value = value; // Ensure only the digit entered is kept
+				if (currentCol < 4) {
+					currentCol++;
+					document.getElementById(`guess${currentRow}${currentCol}`).focus();
+				}
+			} else {
+				event.target.value = ''; // Clear the input if it's not a valid digit
+			}
+		}
+
+		function handleBackspace(event) {
+			if (event.key === 'Backspace' && event.target.value === "") {
+				if (currentCol > 1) {
+					currentCol--;
+					document.getElementById(`guess${currentRow}${currentCol}`).focus();
+					document.getElementById(`guess${currentRow}${currentCol}`).value = ''; // Clear the input
+				}
+			}
+		}
+
+		function handleNavigation(event) {
+			if (event.key === 'ArrowLeft' && currentCol > 1) {
+				currentCol--;
+				document.getElementById(`guess${currentRow}${currentCol}`).focus();
+			} else if (event.key === 'ArrowRight' && currentCol < 4) {
+				currentCol++;
+				document.getElementById(`guess${currentRow}${currentCol}`).focus();
+			} else if (event.key === 'Enter') {
+				if (isRowFilled(currentRow)) {
+					submitGuess(currentRow);
+					if (currentRow < 6 && remainingGuesses > 0) {
+						currentRow++;
+						currentCol = 1;
+						document.getElementById(`guess${currentRow}${currentCol}`).focus();
+					}
+				}
+			}
+		}
+
+		function isRowFilled(row) {
+			for (let col = 1; col <= 4; col++) {
+				if (document.getElementById(`guess${row}${col}`).value === "") {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		function submitGuess(row) {
+			let guess = "";
+			for (let i = 1; i <= 4; i++) {
+				guess += document.getElementById(`guess${row}${i}`).value;
+			}
+
+			if (guess.length === 4) {
+				let { bulls, cows } = checkGuess(guess);
+				let feedback = document.getElementById(`feedback${row}`);
+				feedback.textContent = `🐂: ${bulls} 🐄: ${cows}`;
+				if (bulls === 4) {
+					showMessage("🎉 Congratulations! You got the number! 🎉");
+				} else {
+					remainingGuesses--;
+					if (remainingGuesses === 0) {
+						showMessage(`Try again! The actual number was ${targetNumber}.`);
+					}
+				}
+				for (let i = 1; i <= 4; i++) {
+					document.getElementById(`guess${row}${i}`).disabled = true;
+				}
+			}
+		}
+
+		function checkGuess(guess) {
+			let bulls = 0;
+			let cows = 0;
+
+			for (let i = 0; i < guess.length; i++) {
+				if (guess[i] === targetNumber[i]) {
+					bulls++;
+				} else if (targetNumber.includes(guess[i])) {
+					cows++;
+				}
+			}
+
+			return { bulls, cows };
+		}
+
+		function showMessage(message) {
+			let messageDiv = document.getElementById("message");
+			messageDiv.textContent = message;
+		}
+
+		var modal = document.getElementById("myModal");
+		var closeBtn = document.getElementsByClassName("close")[0];
+
+		window.onload = function() {
+			modal.style.display = "block";
+			document.getElementById(`guess${currentRow}${currentCol}`).focus(); // Auto-focus the first input box
+		}
+
+		closeBtn.onclick = function() {
+			modal.style.display = "none";
+			document.addEventListener('keydown', handleNavigation); // Reattach the event listener
+		}
+
+		window.onclick = function(event) {
+			if (event.target == modal) {
+				modal.style.display = "none";
+			}
+		}
+
+		function openModal() {
+			modal.style.display = "block";
+			document.getElementById(`guess${currentRow}${currentCol}`).blur(); // Remove focus from the input
+		}
+
+		let gamesPlayed = localStorage.getItem('gamesPlayed') ? parseInt(localStorage.getItem('gamesPlayed')) : 0;
+
+		function updateGameCounter() {
+			gamesPlayed++;
+			localStorage.setItem('gamesPlayed', gamesPlayed);
+			document.getElementById('gameCounter').textContent = `Games Played: ${gamesPlayed}`;
+		}
+
+		function restartGame() {
+			targetNumber = generateRandomNumber();
+			remainingGuesses = 6;
+			currentRow = 1;
+			currentCol = 1;
+
+			for (let row = 1; row <= 6; row++) {
+				for (let col = 1; col <= 4; col++) {
+					let inputField = document.getElementById(`guess${row}${col}`);
+					inputField.value = '';
+					inputField.disabled = false;
+				}
+				document.getElementById(`feedback${row}`).textContent = '';
+			}
+
+			showMessage("");
+			modal.style.display = "none";
+			document.getElementById(`guess${currentRow}${currentCol}`).focus(); // Auto-focus the first input box after restarting
+
+			// Update game counter
+			updateGameCounter();
+		}
+
+		// Initialize the game counter on load
+		window.onload = function() {
+			modal.style.display = "block";
+			document.getElementById(`guess${currentRow}${currentCol}`).focus(); // Auto-focus the first input box
+
+			// Display the game counter
+			document.getElementById('gameCounter').textContent = `Games Played: ${gamesPlayed}`;
+		}
+
+
+		// Initialize the game counter on load
+		window.onload = function() {
+			modal.style.display = "block";
+			document.getElementById(`guess${currentRow}${currentCol}`).focus(); // Auto-focus the first input box
+
+			// Initialize game counter
+			updateGameCounter();
+		}
+
+
+		function goToHome() {
+			window.location.href = "index.html"; 
+		}
+
+		document.addEventListener('keydown', handleNavigation);
+		document.querySelectorAll('.guess').forEach(input => {
+			input.addEventListener('input', handleInput);
+			input.addEventListener('keydown', handleBackspace);
+		});
+
+    </script>
+</body>
+</html>
