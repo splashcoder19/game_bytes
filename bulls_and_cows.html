@@ -143,6 +143,66 @@
 		.guess:disabled {
 			background-color: white; /* Change to your preferred color */
 		}
+		/* Feedback Button */
+		.feedback-button {
+			position: fixed;
+			bottom: 20px;
+			right: 20px;
+			z-index: 10;
+		}
+
+		.feedback-button button {
+			background-color: #007bff;
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 5px;
+			font-size: 16px;
+			cursor: pointer;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+
+		.feedback-button button:hover {
+			background-color: #0056b3;
+		}
+
+		/* Feedback Modal */
+		.modal {
+			display: none;
+			position: fixed;
+			z-index: 1;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgba(0, 0, 0, 0.4);
+		}
+
+		.modal-content {
+			background-color: #fefefe;
+			margin: 15% auto;
+			padding: 20px;
+			border-radius: 8px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			width: 80%;
+			max-width: 400px;
+		}
+
+		.close-feedback {
+			color: #aaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+			cursor: pointer;
+		}
+
+		.close-feedback:hover,
+		.close-feedback:focus {
+			color: #333;
+			text-decoration: none;
+		}
+
 
 
     </style>
@@ -164,6 +224,22 @@
 		</div>
 	</div>
 	
+		<!-- Send Feedback Button -->
+	<div class="feedback-button">
+		<button id="feedback-btn">Send Feedback</button>
+	</div>
+
+	<!-- Feedback Modal -->
+	<div id="feedbackModal" class="modal">
+		<div class="modal-content">
+			<span class="close-feedback">&times;</span>
+			<h2>Got thoughts?</h2>
+			<p>Let me know! </p>
+			<p><a href="mailto:splashcoder19@gmail.com?subject=Feedback%20on%20Bulls%20%26%20Cows" style="color: #007bff; text-decoration: none;">Click here to send your feedback</a></p>
+		</div>
+	</div>
+
+
 
     <div class="container">
         <h1>Bulls & Cows</h1>
@@ -426,5 +502,29 @@
 		});
 
     </script>
+	<script>
+		// Feedback Modal functionality
+		const feedbackBtn = document.getElementById('feedback-btn');
+		const feedbackModal = document.getElementById('feedbackModal');
+		const closeFeedback = document.querySelector('.close-feedback');
+	
+		// Open Feedback Modal
+		feedbackBtn.addEventListener('click', () => {
+			feedbackModal.style.display = 'block';
+		});
+	
+		// Close Feedback Modal
+		closeFeedback.addEventListener('click', () => {
+			feedbackModal.style.display = 'none';
+		});
+	
+		// Close Feedback Modal when clicking outside
+		window.addEventListener('click', (event) => {
+			if (event.target === feedbackModal) {
+				feedbackModal.style.display = 'none';
+			}
+		});
+	</script>
+	
 </body>
 </html>
