@@ -144,12 +144,6 @@
 			background-color: white; /* Change to your preferred color */
 		}
 
-		.game-counter {
-			margin-top: 20px;
-			font-size: 18px;
-			color: #333;
-		}
-
 
     </style>
 </head>
@@ -233,7 +227,6 @@
 		<!-- Question mark button -->
 		<div class="question-btn" title="Help" onclick="openModal()">❓</div>
 		<div class="home-btn" title="Home" onclick="goToHome()">🏠</div>
-		<div id="gameCounter" class="game-counter">Games Played: 0</div>
 
 
     </div>
@@ -385,13 +378,6 @@
 			document.getElementById(`guess${currentRow}${currentCol}`).blur(); // Remove focus from the input
 		}
 
-		let gamesPlayed = localStorage.getItem('gamesPlayed') ? parseInt(localStorage.getItem('gamesPlayed')) : 0;
-
-		function updateGameCounter() {
-			gamesPlayed++;
-			localStorage.setItem('gamesPlayed', gamesPlayed);
-			document.getElementById('gameCounter').textContent = `Games Played: ${gamesPlayed}`;
-		}
 
 		function restartGame() {
 			targetNumber = generateRandomNumber();
@@ -412,27 +398,18 @@
 			modal.style.display = "none";
 			document.getElementById(`guess${currentRow}${currentCol}`).focus(); // Auto-focus the first input box after restarting
 
-			// Update game counter
-			updateGameCounter();
 		}
 
-		// Initialize the game counter on load
+		window.onload = function() {
+			modal.style.display = "block";
+			document.getElementById(`guess${currentRow}${currentCol}`).focus(); // Auto-focus the first input box
+		}
+
+
 		window.onload = function() {
 			modal.style.display = "block";
 			document.getElementById(`guess${currentRow}${currentCol}`).focus(); // Auto-focus the first input box
 
-			// Display the game counter
-			document.getElementById('gameCounter').textContent = `Games Played: ${gamesPlayed}`;
-		}
-
-
-		// Initialize the game counter on load
-		window.onload = function() {
-			modal.style.display = "block";
-			document.getElementById(`guess${currentRow}${currentCol}`).focus(); // Auto-focus the first input box
-
-			// Initialize game counter
-			updateGameCounter();
 		}
 
 
