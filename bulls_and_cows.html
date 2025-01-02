@@ -312,32 +312,57 @@
     </div>
 
     <script>
-        let targetNumber = generateRandomNumber();
+		let targetNumber = generateRandomNumber();
 		let remainingGuesses = 6;
 		let currentRow = 1;
 		let currentCol = 1;
+	
+		// Neutral color palette with richer tones
+		const neutralColors = [
+        "#8B7E66", // Taupe
+        "#A98274", // Dusty Rose
+        "#6C757D", // Charcoal Gray
+        "#B8860B", // Dark Goldenrod
+        "#5F9EA0", // Cadet Blue
+        "#556B2F", // Olive Green
+        "#8B4513", // Saddle Brown
+        "#708090", // Slate Gray
+        "#6A5ACD", // Slate Blue
+    	];
 
+	
+		// Function to change the background to a random neutral color
+		function changeBackground() {
+			const randomIndex = Math.floor(Math.random() * neutralColors.length);
+			document.body.style.backgroundColor = neutralColors[randomIndex];
+		}
+	
+		// Start changing the background every 3 seconds
+		setInterval(changeBackground, 3000);
+	
+		// Function to generate a random 4-digit number with unique digits
 		function generateRandomNumber() {
 			let digits = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // First digit cannot be 0
 			let num = "";
-
+	
 			// Select the first digit (1-9)
 			let firstDigitIndex = Math.floor(Math.random() * digits.length);
 			num += digits[firstDigitIndex];
 			digits.splice(firstDigitIndex, 1); // Remove the selected digit from the pool
-
+	
 			// Add 0 to the pool for the remaining digits
 			digits.push(0);
-
+	
 			// Select the remaining three digits (0-9, no repeats)
 			while (num.length < 4) {
 				let digitIndex = Math.floor(Math.random() * digits.length);
 				num += digits[digitIndex];
 				digits.splice(digitIndex, 1); // Remove the selected digit from the pool
 			}
-
+	
 			return num;
 		}
+	
 
 		function handleInput(event) {
 			const value = event.target.value;
