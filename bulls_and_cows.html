@@ -121,7 +121,8 @@
 			position: absolute;
 			top: 10px;
 			right: 50px;
-			font-size: 24px;
+			font-size: 36px; /* Increase font size */
+			padding: 10px; /* Add padding for larger clickable area */
 			cursor: pointer;
 		}
 
@@ -130,17 +131,21 @@
 			position: absolute;
 			top: 10px;
 			right: 10px;
-			font-size: 24px;
+			font-size: 36px; /* Increase font size */
+			padding: 10px; /* Add padding for larger clickable area */
 			cursor: pointer;
 		}
 
+		/* Home button styles */
 		.home-btn {
 			position: absolute;
 			top: 10px;
 			left: 10px;
-			font-size: 24px;
+			font-size: 36px; /* Increase font size */
+			padding: 10px; /* Add padding for larger clickable area */
 			cursor: pointer;
 		}
+
 
 		.guess:disabled {
 			background-color: white; /* Change to your preferred color */
@@ -237,7 +242,7 @@
 			<span class="close-feedback">&times;</span>
 			<h2>Got thoughts?</h2>
 			<p>Let me know! </p>
-			<p><a href="mailto:splashcoder19@gmail.com?subject=Feedback%20on%20Bulls%20%26%20Cows" style="color: #007bff; text-decoration: none;">Click here to send your feedback</a></p>
+			<p>Send your feedback to: <span style="color: #007bff;">splashcoder19@gmail.com</span></p>
 		</div>
 	</div>
 
@@ -338,7 +343,7 @@
 		}
 	
 		// Start changing the background every 3 seconds
-		setInterval(changeBackground, 3000);
+		setInterval(changeBackground, 5000);
 	
 		// Function to generate a random 4-digit number with unique digits
 		function generateRandomNumber() {
@@ -424,7 +429,7 @@
 			if (guess.length === 4) {
 				let { bulls, cows } = checkGuess(guess);
 				let feedback = document.getElementById(`feedback${row}`);
-				feedback.textContent = `🐂: ${bulls} 🐄: ${cows}`;
+				feedback.innerHTML = `<span style="font-size: 24px;">🐂</span>: ${bulls} <span style="font-size: 24px;">🐄</span>: ${cows}`;
 				if (bulls === 4) {
 					showMessage("🎉 Congratulations! You got the number! 🎉");
 				} else {
