@@ -465,99 +465,121 @@
 			messageDiv.textContent = message;
 		}
 
-		var modal = document.getElementById("myModal");
-		var closeBtn = document.getElementsByClassName("close")[0];
+</script>
 
-		window.onload = function() {
-			modal.style.display = "block";
-			document.getElementById(`guess${currentRow}${currentCol}`).focus(); // Auto-focus the first input box
-		}
+<script>
+    // Only one window.onload function
+    window.onload = function() {
+        modal.style.display = "block";
+        document.getElementById(`guess${currentRow}${currentCol}`).focus(); // Auto-focus the first input box
+    };
 
-		closeBtn.onclick = function() {
-			modal.style.display = "none";
-			document.addEventListener('keydown', handleNavigation); // Reattach the event listener
-		}
+    // Combined Modal Open/Close Logic
+    const modal = document.getElementById("myModal");
+    const closeBtn = document.getElementsByClassName("close")[0];
+    const feedbackModal = document.getElementById('feedbackModal');
+    const feedbackBtn = document.getElementById('feedback-btn');
+    const closeFeedback = document.querySelector('.close-feedback');
 
-		window.onclick = function(event) {
-			if (event.target == modal) {
-				modal.style.display = "none";
-			}
-		}
+    function openModal() {
+        modal.style.display = "block";
+        document.getElementById(`guess${currentRow}${currentCol}`).blur(); // Remove focus from the input
+    }
 
-		function openModal() {
-			modal.style.display = "block";
-			document.getElementById(`guess${currentRow}${currentCol}`).blur(); // Remove focus from the input
-		}
+    closeBtn.onclick = function() {
+        modal.style.display = "none";
+    };
 
+    closeFeedback.onclick = function() {
+        feedbackModal.style.display = "none";
+    };
 
-		function restartGame() {
-			targetNumber = generateRandomNumber();
-			remainingGuesses = 6;
-			currentRow = 1;
-			currentCol = 1;
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+        if (event.target === feedbackModal) {
+            feedbackModal.style.display = "none";
+        }
+    };
 
-			for (let row = 1; row <= 6; row++) {
-				for (let col = 1; col <= 4; col++) {
-					let inputField = document.getElementById(`guess${row}${col}`);
-					inputField.value = '';
-					inputField.disabled = false;
-				}
-				document.getElementById(`feedback${row}`).textContent = '';
-			}
+    // Handle input and backspace in one function
+    document.addEventListener('keydown', function(event) {
+        if (/^\d$/.test(event.key)) {
+            handleInput(event);
+        } else if (event.key === 'Backspace') {
+            handleBackspace(event);
+        } else if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === 'Enter') {
+            handleNavigation(event);
+        }
+    });
 
-			showMessage("");
-			modal.style.display = "none";
-			document.getElementById(`guess${currentRow}${currentCol}`).focus(); // Auto-focus the first input box after restarting
+    // Handle input for the number guesses
+    function handleInput(event) {
+        const value = event.target.value;
+        if (/^\d$/.test(value)) {
+            event.target.value = value;
+            if (currentCol < 4) {
+                currentCol++;
+                document.getElementById(`guess${currentRow}${currentCol}`).focus();
+            }
+        } else {
+            event.target.value = '';
+        }
+    }
 
-		}
+    // Handle backspace to move focus
+    function handleBackspace(event) {
+        if (event.key === 'Backspace' && event.target.value === "") {
+            if (currentCol > 1) {
+                currentCol--;
+                document.getElementById(`guess${currentRow}${currentCol}`).focus();
+                document.getElementById(`guess${currentRow}${currentCol}`).value = '';
+            }
+        }
+    }
 
-		window.onload = function() {
-			modal.style.display = "block";
-			document.getElementById(`guess${currentRow}${currentCol}`).focus(); // Auto-focus the first input box
-		}
+    // Navigation for guesses (arrow keys and Enter)
+    function handleNavigation(event) {
+        if (event.key === 'ArrowLeft' && currentCol > 1) {
+            currentCol--;
+            document.getElementById(`guess${currentRow}${currentCol}`).focus();
+        } else if (event.key === 'ArrowRight' && currentCol < 4) {
+            currentCol++;
+            document.getElementById(`guess${currentRow}${currentCol}`).focus();
+        } else if (event.key === 'Enter') {
+            if (isRowFilled(currentRow)) {
+                submitGuess(currentRow);
+                if (currentRow < 6 && remainingGuesses > 0) {
+                    currentRow++;
+                    currentCol = 1;
+                    document.getElementById(`guess${currentRow}${currentCol}`).focus();
+                }
+            }
+        }
+    }
 
+    // Remove redundant code (resetting variables and modal handling already combined above)
+    function restartGame() {
+        targetNumber = generateRandomNumber();
+        remainingGuesses = 6;
+        currentRow = 1;
+        currentCol = 1;
 
-		window.onload = function() {
-			modal.style.display = "block";
-			document.getElementById(`guess${currentRow}${currentCol}`).focus(); // Auto-focus the first input box
+        for (let row = 1; row <= 6; row++) {
+            for (let col = 1; col <= 4; col++) {
+                let inputField = document.getElementById(`guess${row}${col}`);
+                inputField.value = '';
+                inputField.disabled = false;
+            }
+            document.getElementById(`feedback${row}`).textContent = '';
+        }
 
-		}
-
-
-		function goToHome() {
-			window.location.href = "index.html"; 
-		}
-
-		document.addEventListener('keydown', handleNavigation);
-		document.querySelectorAll('.guess').forEach(input => {
-			input.addEventListener('input', handleInput);
-			input.addEventListener('keydown', handleBackspace);
-		});
-
-    </script>
-	<script>
-		// Feedback Modal functionality
-		const feedbackBtn = document.getElementById('feedback-btn');
-		const feedbackModal = document.getElementById('feedbackModal');
-		const closeFeedback = document.querySelector('.close-feedback');
-	
-		// Open Feedback Modal
-		feedbackBtn.addEventListener('click', () => {
-			feedbackModal.style.display = 'block';
-		});
-	
-		// Close Feedback Modal
-		closeFeedback.addEventListener('click', () => {
-			feedbackModal.style.display = 'none';
-		});
-	
-		// Close Feedback Modal when clicking outside
-		window.addEventListener('click', (event) => {
-			if (event.target === feedbackModal) {
-				feedbackModal.style.display = 'none';
-			}
-		});
-	</script>
+        showMessage("");
+        modal.style.display = "none";
+        document.getElementById(`guess${currentRow}${currentCol}`).focus();
+    }
+</script>
 	
 </body>
 </html>
