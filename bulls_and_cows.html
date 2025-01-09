@@ -9,7 +9,7 @@
     <style>
         body {
 			font-family: Arial, sans-serif;
-			background-color: #d2b48c; /* Darker brown background */
+			background-color: #d2b48c; 
 			margin: 0;
 			padding: 0;
 			display: flex;
@@ -22,7 +22,7 @@
 			position: relative;
 			text-align: center;
 			background-color: #f9f9f9;
-			border-radius: 15px; /* Added border-radius */
+			border-radius: 15px; 
 			padding: 30px;
 			max-width: 600px;
 			width: 90%;
@@ -30,15 +30,15 @@
 
 		h1 {
 			color: #333;
-			margin-top: -5px; /* Move the title up */
-			margin-bottom: 10px; /* Optional: Adjust the bottom margin for spacing */
-			margin-right: 20px; /* Adjust the right margin */
+			margin-top: -5px; 
+			margin-bottom: 10px; 
+			margin-right: 20px; 
 		}
 
 
 		.guess-row {
 			display: flex;
-			justify-content: center; /* Center the guess rows */
+			justify-content: center; 
 			align-items: center;
 			margin-bottom: 20px;
 		}
@@ -64,7 +64,7 @@
 			align-items: center;
 			margin-top: 10px;
 			width: 110px;
-			justify-content: center; /* Center the feedback */
+			justify-content: center;
 		}
 
 		.feedback {
@@ -80,7 +80,6 @@
 			color: #333;
 		}
 
-		/* Modal styles */
 		.modal {
 			display: none;
 			position: fixed;
@@ -117,45 +116,42 @@
 			text-decoration: none;
 		}
 
-		/* Restart button styles */
 		.restart-btn {
 			position: absolute;
 			top: 10px;
 			right: 50px;
-			font-size: 36px; /* Increase font size */
-			padding: 10px; /* Add padding for larger clickable area */
+			font-size: 36px; 
+			padding: 10px; 
 			cursor: pointer;
 		}
 
-		/* Question mark button styles */
 		.question-btn {
 			position: absolute;
 			top: 10px;
 			right: 10px;
-			font-size: 36px; /* Increase font size */
-			padding: 10px; /* Add padding for larger clickable area */
+			font-size: 36px; 
+			padding: 10px; 
 			cursor: pointer;
 		}
 
-		/* Home button styles */
 		.home-btn {
 			position: absolute;
 			top: 10px;
 			left: 10px;
-			font-size: 36px; /* Increase font size */
-			padding: 10px; /* Add padding for larger clickable area */
+			font-size: 36px; 
+			padding: 10px;
 			cursor: pointer;
 		}
 
 
 		.guess:disabled {
-			background-color: white; /* Change to your preferred color */
+			background-color: white; 
 		}
 		.feedback-button {
 			position: fixed;
 			bottom: 40px;
 			left: 50%;
-			transform: translateX(-50%); /* Center the button horizontally */
+			transform: translateX(-50%); 
 			z-index: 10;
 		}
 
@@ -175,7 +171,6 @@
 			background-color: #0056b3;
 		}
 
-		/* Feedback Modal */
 		.modal {
 			display: none;
 			position: fixed;
@@ -217,7 +212,6 @@
     </style>
 </head>
 <body>
-    <!-- Modal popup -->
     <div id="myModal" class="modal">
 		<div class="modal-content">
 			<span class="close">&times;</span>
@@ -233,12 +227,10 @@
 		</div>
 	</div>
 	
-		<!-- Send Feedback Button -->
 	<div class="feedback-button">
 		<button id="feedback-btn">Send Feedback</button>
 	</div>
 
-	<!-- Feedback Modal -->
 	<div id="feedbackModal" class="modal">
 		<div class="modal-content">
 			<span class="close-feedback">&times;</span>
@@ -309,9 +301,7 @@
             </div>
         </div>
         <div id="message"></div>
-       <!-- Restart button -->
 		<div class="restart-btn" title="Restart" onclick="restartGame()">⟳</div>
-		<!-- Question mark button -->
 		<div class="question-btn" title="Help" onclick="openModal()">❓</div>
 		<div class="home-btn" title="Home" onclick="goToHome()">🏠</div>
 
@@ -324,46 +314,39 @@
 		let currentRow = 1;
 		let currentCol = 1;
 	
-		// Neutral color palette with richer tones
 		const neutralColors = [
-        "#8B7E66", // Taupe
-        "#A98274", // Dusty Rose
-        "#6C757D", // Charcoal Gray
-        "#B8860B", // Dark Goldenrod
-        "#5F9EA0", // Cadet Blue
-        "#556B2F", // Olive Green
-        "#708090", // Slate Gray
-        "#6A5ACD", // Slate Blue
+        "#8B7E66", 
+        "#A98274",
+        "#6C757D", 
+        "#B8860B",
+        "#5F9EA0", 
+        "#556B2F", 
+        "#708090",
+        "#6A5ACD",
     	];
 
 	
-		// Function to change the background to a random neutral color
 		function changeBackground() {
 			const randomIndex = Math.floor(Math.random() * neutralColors.length);
 			document.body.style.backgroundColor = neutralColors[randomIndex];
 		}
 	
-		// Start changing the background every 3 seconds
 		setInterval(changeBackground, 5000);
 	
-		// Function to generate a random 4-digit number with unique digits
 		function generateRandomNumber() {
-			let digits = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // First digit cannot be 0
+			let digits = [1, 2, 3, 4, 5, 6, 7, 8, 9]; 
 			let num = "";
 	
-			// Select the first digit (1-9)
 			let firstDigitIndex = Math.floor(Math.random() * digits.length);
 			num += digits[firstDigitIndex];
-			digits.splice(firstDigitIndex, 1); // Remove the selected digit from the pool
+			digits.splice(firstDigitIndex, 1); 
 	
-			// Add 0 to the pool for the remaining digits
 			digits.push(0);
 	
-			// Select the remaining three digits (0-9, no repeats)
 			while (num.length < 4) {
 				let digitIndex = Math.floor(Math.random() * digits.length);
 				num += digits[digitIndex];
-				digits.splice(digitIndex, 1); // Remove the selected digit from the pool
+				digits.splice(digitIndex, 1); 
 			}
 	
 			return num;
@@ -373,13 +356,13 @@
 		function handleInput(event) {
 			const value = event.target.value;
 			if (/^\d$/.test(value)) {
-				event.target.value = value; // Ensure only the digit entered is kept
+				event.target.value = value; 
 				if (currentCol < 4) {
 					currentCol++;
 					document.getElementById(`guess${currentRow}${currentCol}`).focus();
 				}
 			} else {
-				event.target.value = ''; // Clear the input if it's not a valid digit
+				event.target.value = ''; 
 			}
 		}
 
@@ -388,7 +371,7 @@
 				if (currentCol > 1) {
 					currentCol--;
 					document.getElementById(`guess${currentRow}${currentCol}`).focus();
-					document.getElementById(`guess${currentRow}${currentCol}`).value = ''; // Clear the input
+					document.getElementById(`guess${currentRow}${currentCol}`).value = ''; 
 				}
 			}
 		}
@@ -468,13 +451,11 @@
 </script>
 
 <script>
-    // Only one window.onload function
     window.onload = function() {
         modal.style.display = "block";
         document.getElementById(`guess${currentRow}${currentCol}`).focus(); // Auto-focus the first input box
     };
 
-    // Combined Modal Open/Close Logic
     const modal = document.getElementById("myModal");
     const closeBtn = document.getElementsByClassName("close")[0];
     const feedbackModal = document.getElementById('feedbackModal');
@@ -503,7 +484,6 @@
         }
     };
 
-    // Handle input and backspace in one function
     document.addEventListener('keydown', function(event) {
         if (/^\d$/.test(event.key)) {
             handleInput(event);
@@ -514,7 +494,6 @@
         }
     });
 
-    // Handle input for the number guesses
     function handleInput(event) {
         const value = event.target.value;
         if (/^\d$/.test(value)) {
@@ -528,7 +507,6 @@
         }
     }
 
-    // Handle backspace to move focus
     function handleBackspace(event) {
         if (event.key === 'Backspace' && event.target.value === "") {
             if (currentCol > 1) {
@@ -539,7 +517,6 @@
         }
     }
 
-    // Navigation for guesses (arrow keys and Enter)
     function handleNavigation(event) {
         if (event.key === 'ArrowLeft' && currentCol > 1) {
             currentCol--;
@@ -559,7 +536,6 @@
         }
     }
 
-    // Remove redundant code (resetting variables and modal handling already combined above)
     function restartGame() {
         targetNumber = generateRandomNumber();
         remainingGuesses = 6;
